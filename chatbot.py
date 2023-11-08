@@ -2,7 +2,7 @@ import os
 from openai import OpenAI
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv('.env.local')
 key = os.getenv("OPENAI_API_KEY")
 client = OpenAI(api_key=key)
 STATUS_COMPLETED = "completed"
@@ -20,7 +20,7 @@ You are a Wells Fargo Code of Conduct Representative who responds to the people 
 """
 
 assistant = client.beta.assistants.create(
-    name="The Pharmacist",
+    name="Wells Fargo Code of Conduct Representative",
     description="A chatbot that responds to people effectively with a precise response regarding the code of conduct at wells fargo.",
     model="gpt-4-1106-preview",
     tools= [{"type": "retrieval"}],
@@ -35,10 +35,10 @@ run = client.beta.threads.runs.create(
     instructions=instructions
     )
 
-print(f"Your run id is {run.id}\n")
+print(f"\nYour run id is {run.id}\n")
 
 while True:
-    text = input("What's your question?\n")
+    text = input("\nWhat's your question?\n\n")
 
     message = client.beta.threads.messages.create(
         thread_id=thread.id, 
@@ -52,7 +52,7 @@ while True:
         instructions=instructions,
     )
 
-    print(f"Your new run id is - {new_run.id}")
+    print(f"\nYour new run id is - {new_run.id}\n")
 
     status = None
     while status != STATUS_COMPLETED:
